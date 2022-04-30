@@ -23,7 +23,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>java11</finalName>
+    <finalName>java11-crypto</finalName>
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>
