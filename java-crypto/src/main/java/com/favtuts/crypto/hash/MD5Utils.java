@@ -1,7 +1,11 @@
 package com.favtuts.crypto.hash;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -30,6 +34,25 @@ public class MD5Utils {
         return sb.toString();
     }
 
+    private static byte[] checksum(String filePath) {
+
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("MD5");
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        try (InputStream is = new FileInputStream(filePath);
+             DigestInputStream dis = new DigestInputStream(is, md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+            md = dis.getMessageDigest();
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+        return md.digest();
+    }
+
     public static void main(String[] args) {
         String pText = "Hello MD5";
         System.out.println(String.format(OUTPUT_FORMAT, "Input (string)", pText));
@@ -39,5 +62,10 @@ public class MD5Utils {
         System.out.println(String.format(OUTPUT_FORMAT, "MD5 (hex) ", bytesToHex(md5InBytes)));
         // fixed length, 16 bytes, 128 bits.
         System.out.println(String.format(OUTPUT_FORMAT, "MD5 (length)", md5InBytes.length));
+
+        // get file path from resources
+        String filePath = ClassLoader.getSystemResource("readme.txt").getFile();
+        System.out.println(String.format(OUTPUT_FORMAT, "Input (file) ", filePath));
+        System.out.println(String.format(OUTPUT_FORMAT, "MD5 (checksum hex) ", bytesToHex(checksum(filePath))));
     }
 }
