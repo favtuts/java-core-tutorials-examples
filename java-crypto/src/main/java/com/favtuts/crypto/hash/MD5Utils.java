@@ -9,6 +9,8 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class MD5Utils {
 
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
@@ -64,8 +66,21 @@ public class MD5Utils {
         System.out.println(String.format(OUTPUT_FORMAT, "MD5 (length)", md5InBytes.length));
 
         // get file path from resources
+        System.out.println("------");
         String filePath = ClassLoader.getSystemResource("readme.txt").getFile();
         System.out.println(String.format(OUTPUT_FORMAT, "Input (file) ", filePath));
         System.out.println(String.format(OUTPUT_FORMAT, "MD5 (checksum hex) ", bytesToHex(checksum(filePath))));
+
+        // commons-codec
+        System.out.println("------");
+        System.out.println(String.format(OUTPUT_FORMAT, "MD5 (hex)", DigestUtils.md5Hex(pText)));
+
+        // commons-codec
+        try (InputStream is = new FileInputStream(filePath)) {
+            String checksum = DigestUtils.md5Hex(is);
+            System.out.println(String.format(OUTPUT_FORMAT, "MD5 (checksum hex) ", checksum));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
