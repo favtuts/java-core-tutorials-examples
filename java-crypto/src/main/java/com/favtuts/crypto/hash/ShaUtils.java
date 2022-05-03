@@ -1,7 +1,11 @@
 package com.favtuts.crypto.hash;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -20,6 +24,24 @@ public class ShaUtils {
 
         byte[] result = md.digest(input);
         return result;
+    }
+
+    private static byte[] checksum(String filePath, String algorithm) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance(algorithm);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        try (InputStream is = new FileInputStream(filePath); 
+            DigestInputStream dis = new DigestInputStream(is, md)) {
+            while (dis.read() != -1) ; //empty loop to clear the data
+        } catch (IOException e) {
+            throw new IllegalArgumentException(e);
+        }
+
+        return md.digest();
     }
 
     public static String bytesToHex(byte[] bytes) {
@@ -44,6 +66,13 @@ public class ShaUtils {
 
         // fixed length, 32 bytes, 256 bits.
         System.out.println(String.format(OUTPUT_FORMAT, algorithm + " (length)", shaInBytes.length));
+
+        
+        // get file path from resources
+        String filePath = ClassLoader.getSystemResource("sha-file.txt").getFile();
+        System.out.println("Resourc path: " + filePath);
+        byte[] hashInBytes = checksum(filePath, algorithm);
+        System.out.println(String.format(OUTPUT_FORMAT, "Checksum sha-file.txt", bytesToHex(hashInBytes)));
     }
     
 }
