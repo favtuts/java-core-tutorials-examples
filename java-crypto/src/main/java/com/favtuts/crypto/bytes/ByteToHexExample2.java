@@ -24,6 +24,8 @@ public class ByteToHexExample2 {
     public static void main(String[] args) {
 
         String input = "favtuts.com";
+
+        // 666176747574732e636f6d
         System.out.println(hex(input.getBytes(StandardCharsets.UTF_8)));
 
     }
