@@ -3,11 +3,14 @@ package com.favtuts.crypto.hash;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
+import com.favtuts.crypto.utils.CryptoUtils;
 
 public class ShaUtils {
 
@@ -73,6 +76,23 @@ public class ShaUtils {
         System.out.println("Resourc path: " + filePath);
         byte[] hashInBytes = checksum(filePath, algorithm);
         System.out.println(String.format(OUTPUT_FORMAT, "Checksum sha-file.txt", bytesToHex(hashInBytes)));
+
+        // get a 16 bytes random salt
+        byte[] salt = CryptoUtils.getRandomNonce(16);
+        byte[] text = "Hello World".getBytes(StandardCharsets.UTF_8);
+
+        // combine two byte array
+        byte[] input = ByteBuffer.allocate(salt.length + text.length)
+            .put(salt)
+            .put(text)
+            .array();
+        
+        // no salt, SHA3-256
+        System.out.println(bytesToHex(ShaUtils.digest(text, "SHA3-256")));
+
+
+        // 16 bytes salt, SHA3-256
+        System.out.println(bytesToHex(ShaUtils.digest(input, "SHA3-256")));
     }
     
 }
