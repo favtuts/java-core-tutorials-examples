@@ -15,7 +15,7 @@ public class ByteToHexExample1 {
     }
 
     public static void main(String[] args) {
-        String input = "a";
+        String input = "favtuts.com";
         System.out.println(hex(input.getBytes(StandardCharsets.UTF_8)));
     }
 }
