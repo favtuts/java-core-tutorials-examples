@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 
 import com.favtuts.crypto.utils.CryptoUtils;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 public class ShaUtils {
 
     private static final Charset UTF_8 = StandardCharsets.UTF_8;
@@ -69,6 +71,16 @@ public class ShaUtils {
 
         // fixed length, 32 bytes, 256 bits.
         System.out.println(String.format(OUTPUT_FORMAT, algorithm + " (length)", shaInBytes.length));
+
+
+        // examples using Apache Commons Codec
+        byte[] hash1 = DigestUtils.sha256(pText);           // returns byte arrays
+        String hash2 = DigestUtils.sha256Hex(pText);        // returns encoded hex
+        System.out.println(hash2);
+
+        byte[] hash3 = DigestUtils.sha3_256(pText);         // return byte arrays
+        String hash4 = DigestUtils.sha3_256Hex(pText);    // returns encoded hex
+        System.out.println(hash4);
 
         
         // get file path from resources
