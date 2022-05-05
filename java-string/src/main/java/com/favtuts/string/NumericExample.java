@@ -20,6 +20,7 @@ public class NumericExample {
             return false;
         }
 
+        /*
         for (char c : str.toCharArray()) {
             if (!Character.isDigit(c)) {
                 return false;
@@ -27,5 +28,8 @@ public class NumericExample {
         }
 
         return true;
+        */        
+
+        return str.chars().allMatch(Character::isDigit);
     }
 }
