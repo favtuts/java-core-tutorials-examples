@@ -1,5 +1,7 @@
 package com.favtuts.string;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 public class NumericExample {
     public static void main(String[] args) {
 
@@ -30,6 +32,8 @@ public class NumericExample {
         return true;
         */        
 
-        return str.chars().allMatch(Character::isDigit);
+        // return str.chars().allMatch(Character::isDigit);
+
+        return NumberUtils.isDigits(str);
     }
 }
