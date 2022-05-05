@@ -5,9 +5,14 @@ public class StringCompareNull {
 
         String str1 = null;
 
-        if (str1.equals("hello")) {
+        // throw NullPointerException
+        /*if (str1.equals("hello")) {
+            System.out.println("equals");
+        }*/
+
+        // check null
+        if (str1 != null && str1.equals("hello")) {
             System.out.println("equals");
         }
-
     }
 }
