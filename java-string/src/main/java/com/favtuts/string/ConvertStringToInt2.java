@@ -11,7 +11,7 @@ public class ConvertStringToInt2 {
         try {
             int result = Integer.parseInt(number);
             System.out.println(result);
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             //do something for the exception.
             System.err.println("Invalid number format : " + number);
         }
