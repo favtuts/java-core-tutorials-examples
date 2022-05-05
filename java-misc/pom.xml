@@ -20,7 +20,12 @@
       <artifactId>junit-jupiter-params</artifactId>
       <version>${junit.version}</version>
       <scope>test</scope>
-    </dependency>          
+    </dependency>
+    <dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <version>1.14</version>
+    </dependency>
   </dependencies>
   <build>
     <finalName>java11-misc</finalName>
