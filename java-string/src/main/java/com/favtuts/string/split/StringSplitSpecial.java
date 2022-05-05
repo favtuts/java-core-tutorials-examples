@@ -5,6 +5,8 @@ public class StringSplitSpecial {
         String csv = "a|b|c|d";
         String[] output = csv.split("|");
 
+        System.out.println(output.length);
+
         for (String s : output) {
             System.out.println(s);
         }
