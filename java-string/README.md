@@ -4,3 +4,4 @@
 * [How to convert String to byte[] in Java?](https://www.favtuts.com/how-to-convert-string-to-byte-in-java/)
 * [How to compare strings in Java](https://www.favtuts.com/how-to-compare-strings-in-java/)
 * [Java String compareTo() examples](https://www.favtuts.com/java-string-compareto-examples/)
+* [How to split a string in Java](https://www.favtuts.com/how-to-split-a-string-in-java/)
