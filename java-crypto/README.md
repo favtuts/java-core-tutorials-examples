@@ -1,4 +1,12 @@
-# all examples related to java crypto
+# Java Crypto
+
+* [Java SHA-256 and SHA3-256 Hashing Example](https://www.favtuts.com/java-sha-256-and-sha3-256-hashing-example/)
+* [Java >> and >>> bitwise shift operators](https://www.favtuts.com/java-and-bitwise-shift-operators/)
+* [Java – How to convert byte arrays to Hex](https://www.favtuts.com/java-how-to-convert-byte-arrays-to-hex/)
+* [How to reverse a string in Java](https://www.favtuts.com/how-to-reverse-a-string-in-java/)
+* [Java – Convert Integer to Binary](https://www.favtuts.com/java-convert-integer-to-binary/)
+* [Java – Convert String to Binary](https://www.favtuts.com/java-convert-string-to-binary/)
+* [Java MD5 Hashing Example](https://www.favtuts.com/java-md5-hashing-example/)
 
 
 # create java crypto project
