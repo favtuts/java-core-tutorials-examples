@@ -36,4 +36,21 @@ public class NumericExample {
 
         return NumberUtils.isDigits(str);
     }
+
+    //This solution is working, but not recommend, performance issue.
+    public static boolean isNumeric2(final String str) {
+
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+
+        try {
+
+            Integer.parseInt(str);
+            return true;
+
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
 }
