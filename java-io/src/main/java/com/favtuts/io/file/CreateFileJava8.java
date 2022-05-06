@@ -15,8 +15,7 @@ public class CreateFileJava8 {
         String fileName = "/home/tvt/workspace/favtuts/newFile.txt";
 
         Path path = Paths.get(fileName);
-
-        /*
+        
         // default, create, truncate and write to it.
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             
@@ -24,15 +23,16 @@ public class CreateFileJava8 {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
         // Append mode.
+        /*
         try (BufferedWriter writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8, StandardOpenOption.APPEND)) {
 
             writer.write("Hello World !!");
             
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 }
