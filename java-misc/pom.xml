@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.favtuts</groupId>
-  <artifactId>java-misc</artifactId>
+  <artifactId>misc</artifactId>
   <packaging>jar</packaging>
   <version>1.0-SNAPSHOT</version>
   <name>java-misc</name>
@@ -28,7 +28,7 @@
     </dependency>
   </dependencies>
   <build>
-    <finalName>java11-misc</finalName>
+    <finalName>java-misc</finalName>
     <plugins>
         <plugin>
             <groupId>org.apache.maven.plugins</groupId>

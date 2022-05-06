@@ -11,7 +11,7 @@ public class ConvertInputStreamToString {
 
     public static void main(String[] args) throws IOException {
         
-        URI uri = URI.create("https://www.google.com/121");
+        URI uri = URI.create("https://www.google.com/");
 
         try (InputStream inputStream = uri.toURL().openStream()) {
             
