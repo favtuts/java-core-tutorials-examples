@@ -9,7 +9,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FileResourcesUtils {
 
@@ -17,6 +19,7 @@ public class FileResourcesUtils {
 
         FileResourcesUtils app = new FileResourcesUtils();
 
+        /*
         //String fileName = "database.properties";
         String fileName = "json/file1.json";
 
@@ -27,7 +30,36 @@ public class FileResourcesUtils {
         System.out.println("\ngetResource : " + fileName);
         File file = app.getFileFromResource(fileName);
         printFile(file);
+        */
+        
+        // read all files from a resources folder
+        try {
+            
+            // files from src/main/resources/json
+            List<File> result = app.getAllFilesFromResource("json");
+            for (File file : result) {
+                System.out.println("file : " + file);
+                printFile(file);
+            }
+        } catch (URISyntaxException | IOException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    private List<File> getAllFilesFromResource(String folder) throws URISyntaxException, IOException {
+
+        ClassLoader classLoader = getClass().getClassLoader();
+
+        URL resource = classLoader.getResource(folder);
+
+        // dun walk the root path, we will walk all the classes
+        List<File> collect = Files.walk(Paths.get(resource.toURI()))
+            .filter(Files::isRegularFile)
+            .map(x -> x.toFile())
+            .collect(Collectors.toList());
+        
+        return collect;
     }
 
     // get a file from the resources folder
