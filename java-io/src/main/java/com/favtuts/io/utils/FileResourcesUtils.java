@@ -5,11 +5,17 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,6 +38,7 @@ public class FileResourcesUtils {
         printFile(file);
         */
         
+        /*
         // read all files from a resources folder
         try {
             
@@ -43,8 +50,56 @@ public class FileResourcesUtils {
             }
         } catch (URISyntaxException | IOException e) {
             e.printStackTrace();
+        }*/
+
+        // read all files from a resources folder (JAR version)
+        try {
+            
+            // get paths from src/main/resources/json
+            List<Path> result = app.getPathsFromResourceJAR("json");
+            for(Path path : result) {
+                System.out.println("Path : " + path);
+
+                String filePathInJAR = path.toString();
+                // Windows will returns /json/file1.json, cut the first /
+                // the correct path should be json/file1.json
+                if (filePathInJAR.startsWith("/")) {
+                    filePathInJAR = filePathInJAR.substring(1, filePathInJAR.length());
+                }
+
+                System.out.println("filePathInJAR : " + filePathInJAR);
+
+                // read a file from resource folder
+                InputStream is = app.getFileFromResourceAsStream(filePathInJAR);
+                printInputStream(is);
+            }
+        } catch (URISyntaxException | IOException e)  {
+            e.printStackTrace();
         }
 
+    }
+
+    private List<Path> getPathsFromResourceJAR(String folder) throws URISyntaxException, IOException {
+
+        List<Path> result;
+
+        // get path of the current running JAR
+        String jarPath = getClass().getProtectionDomain()
+            .getCodeSource()
+            .getLocation()
+            .toURI()
+            .getPath();
+        System.out.println("JAR Path :" + jarPath);
+
+        // file walks JAR
+        URI uri = URI.create("jar:file:" + jarPath);
+        try (FileSystem fs = FileSystems.newFileSystem(uri, Collections.emptyMap())) {
+            result = Files.walk(fs.getPath(folder))
+                .filter(Files::isRegularFile)
+                .collect(Collectors.toList());
+        }
+
+        return result;
     }
 
     private List<File> getAllFilesFromResource(String folder) throws URISyntaxException, IOException {
