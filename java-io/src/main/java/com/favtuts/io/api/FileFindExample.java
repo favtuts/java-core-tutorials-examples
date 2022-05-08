@@ -4,44 +4,36 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// Files.find() examples
 public class FileFindExample {
 
     private static DateTimeFormatter DATE_FORMATTER
             = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-            
+
     public static void main(String[] args) throws IOException {
-                
-        Path path = Paths.get("/home/tvt/workspace/favtuts");
-        /*
-        List<Path> result = findByFileName(path, "newFile.txt");
+
+        Path path = Paths.get("C:\\test\\");
+        List<Path> result = findByFileName(path, "google.png");
         result.forEach(x -> System.out.println(x));
-        */
 
-        /*
+        /*Path path = Paths.get("C:\\Users\\mkyong\\Downloads");
         long fileSize = 1024 * 1024 * 100; // 100M
-
         List<Path> result = findByFileSize(path, fileSize);
         for (Path p : result) {
             System.out.println(String.format("%-40s [fileSize]: %,d", p, Files.size(p)));
-        }
-        */
+        }*/
 
         // find files, LastModifiedTime from yesterday and above
-        List<Path> result = findByLastModifiedTime(
-                //Paths.get("C:\\test"),
-                path,
-                Instant.now().minus(100, ChronoUnit.DAYS));
+        /*List<Path> result = findByLastModifiedTime(
+                Paths.get("C:\\test"),
+                Instant.now().minus(1, ChronoUnit.DAYS));
 
         for (Path p : result) {
 
@@ -53,45 +45,69 @@ public class FileFindExample {
                     .toLocalDateTime();
 
             System.out.println(String.format("%-40s [%s]", p, localDateTime.format(DATE_FORMATTER)));
-        }
+        }*/
+
     }
 
-    public static List<Path> findByFileName(Path path, String fileName) throws IOException {
+    public static List<Path> findByFileName(Path path, String fileName)
+            throws IOException {
 
         List<Path> result;
-        try (Stream<Path> pathStream = Files.find(
-            path, 
-            Integer.MAX_VALUE, 
-            (p, basicFileAttributes) -> p.getFileName().toString().equalsIgnoreCase(fileName)
-        )) {
+        try (Stream<Path> pathStream = Files.find(path,
+                Integer.MAX_VALUE,
+                (p, basicFileAttributes) ->
+                        p.getFileName().toString().equalsIgnoreCase(fileName))
+        ) {
             result = pathStream.collect(Collectors.toList());
         }
         return result;
+
     }
 
-    public static List<Path> findByFileSize(Path path, Long fileSize) throws IOException {
+    public static List<Path> findByFileName2(Path path, String fileName)
+            throws IOException {
 
         List<Path> result;
-        try (Stream<Path> pathStream = Files.find(
-            path, 
-            Integer.MAX_VALUE, 
-            (p, basicFileAttributes) -> {
-                try {
-                    if (Files.isDirectory(p)) {   // ignore directory
+        try (Stream<Path> pathStream = Files.find(path,
+                Integer.MAX_VALUE,
+                (p, basicFileAttributes) -> {
+                    // if directory or no-read permission, ignore
+                    if (Files.isDirectory(p) || !Files.isReadable(p)) {
                         return false;
                     }
-                    return Files.size(p) >= fileSize;
-                } catch (IOException e) {
-                    System.err.println("Unable to get the file size of path : " + path);
+                    return p.getFileName().toString().equalsIgnoreCase(fileName);
+                })
+        ) {
+            result = pathStream.collect(Collectors.toList());
+        }
+        return result;
+
+    }
+
+    public static List<Path> findByFileSize(Path path, long fileSize)
+            throws IOException {
+
+        List<Path> result;
+        try (Stream<Path> pathStream = Files.find(path,
+                Integer.MAX_VALUE,
+                (p, basicFileAttributes) -> {
+                    try {
+                        if (Files.isDirectory(p)) {   // ignore directory
+                            return false;
+                        }
+                        return Files.size(p) >= fileSize;
+                    } catch (IOException e) {
+                        System.err.println("Unable to get the file size of path : " + path);
+                    }
+                    return false;
                 }
-                return false;
-            }
+
         )) {
             result = pathStream.collect(Collectors.toList());
         }
         return result;
+
     }
-    
 
     public static List<Path> findByLastModifiedTime(Path path, Instant instant)
             throws IOException {
@@ -101,7 +117,7 @@ public class FileFindExample {
                 Integer.MAX_VALUE,
                 (p, basicFileAttributes) -> {
 
-                    if(Files.isDirectory(p) || !Files.isReadable(p)){
+                    if (Files.isDirectory(p) || !Files.isReadable(p)) {
                         return false;
                     }
 
@@ -119,4 +135,5 @@ public class FileFindExample {
         return result;
 
     }
+
 }
