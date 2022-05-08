@@ -1,6 +1,5 @@
 package com.favtuts.string;
 
-// A Java example to show you how to convert a Char into a String and vise verse.
 public class ConvertCharToString {
 
     public static void main(String[] args) {
@@ -10,13 +9,13 @@ public class ConvertCharToString {
         //convert a String into char
         char charH = website.charAt(0); //h
         char charP = website.charAt(3);//p
-        char charM = website.charAt(11);//m
+        char charF = website.charAt(11);//f
         System.out.println(charH);
         System.out.println(charP);
-        System.out.println(charM);
+        System.out.println(charF);
 
         //convert char back to String
-        String temp = Character.toString(charM);
+        String temp = Character.toString(charF);
 
         if ("f".equals(temp)) {
             System.out.println("match");
