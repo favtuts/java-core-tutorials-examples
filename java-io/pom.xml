@@ -34,6 +34,25 @@
                 <target>${java.version}</target>
             </configuration>
         </plugin>
+
+        <!-- Make this jar executable -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.2.0</version>
+          <configuration>
+              <excludes>
+                  <exclude>**/log4j.properties</exclude>
+              </excludes>
+              <archive>
+                  <manifest>
+                      <addClasspath>true</addClasspath>                                            
+                      <mainClass>com.favtuts.io.utils.FileResourcesUtils</mainClass>                      
+                      <classpathPrefix>dependency-jars/</classpathPrefix>
+                  </manifest>
+              </archive>
+          </configuration>
+        </plugin>
     </plugins>
   </build>
 </project>

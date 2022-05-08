@@ -42,7 +42,7 @@
                 <source>${java.version}</source>
                 <target>${java.version}</target>
             </configuration>
-        </plugin>
+        </plugin>         
     </plugins>
   </build>
 </project>
