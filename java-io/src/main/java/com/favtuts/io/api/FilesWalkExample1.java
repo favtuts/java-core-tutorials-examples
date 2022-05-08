@@ -14,8 +14,10 @@ public class FilesWalkExample1 {
         
         //Path path = Paths.get("C:\\test\\");
         Path path = Paths.get("/home/tvt/workspace/favtuts/");        
-        //List<Path> paths = listFiles(path);
-        List<Path> paths = listDirectories(path);
+        //List<Path> paths = listFiles(path);        
+        //List<Path> paths = listDirectories(path);
+        List<Path> paths = findByFileExtension(path, ".txt");
+
         paths.forEach(x -> System.out.println(x));
     }
     
@@ -39,6 +41,23 @@ public class FilesWalkExample1 {
             result = walk.filter(Files::isDirectory)
                 .collect(Collectors.toList());
         }
+        return result;
+    }
+
+    public static List<Path> findByFileExtension(Path path, String fileExtension) throws IOException {
+
+        if (!Files.isDirectory(path)) {
+            throw new IllegalArgumentException("Path must be a directory");
+        }
+
+        List<Path> result;
+        try (Stream<Path> walk = Files.walk(path)) {
+            result = walk
+                .filter(Files::isRegularFile) // is a file
+                .filter(p -> p.getFileName().toString().endsWith(fileExtension))
+                .collect(Collectors.toList());
+        }
+
         return result;
     }
 }
