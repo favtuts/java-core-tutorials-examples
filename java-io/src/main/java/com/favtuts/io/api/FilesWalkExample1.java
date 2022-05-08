@@ -14,7 +14,8 @@ public class FilesWalkExample1 {
         
         //Path path = Paths.get("C:\\test\\");
         Path path = Paths.get("/home/tvt/workspace/favtuts/");        
-        List<Path> paths = listFiles(path);
+        //List<Path> paths = listFiles(path);
+        List<Path> paths = listDirectories(path);
         paths.forEach(x -> System.out.println(x));
     }
     
@@ -25,6 +26,17 @@ public class FilesWalkExample1 {
         //try (Stream<Path> walk = Files.walk(path, 1)) {
         try (Stream<Path> walk = Files.walk(path)) {
             result = walk.filter(Files::isRegularFile)
+                .collect(Collectors.toList());
+        }
+        return result;
+    }
+
+    // list all directories from this path
+    public static List<Path> listDirectories(Path path) throws IOException {
+        List<Path> result;
+        //try (Stream<Path> walk = Files.walk(path, 1)) {
+        try (Stream<Path> walk = Files.walk(path)) {
+            result = walk.filter(Files::isDirectory)
                 .collect(Collectors.toList());
         }
         return result;
