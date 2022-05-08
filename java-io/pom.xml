@@ -46,8 +46,11 @@
               </excludes>
               <archive>
                   <manifest>
-                      <addClasspath>true</addClasspath>                                            
-                      <mainClass>com.favtuts.io.utils.FileResourcesUtils</mainClass>                      
+                      <addClasspath>true</addClasspath>
+                      <mainClass>com.favtuts.io.howto.resources.TestApp</mainClass>                      
+                      <!-- 
+                      <mainClass>com.favtuts.io.utils.FileResourcesUtils</mainClass>
+                      -->
                       <classpathPrefix>dependency-jars/</classpathPrefix>
                   </manifest>
               </archive>
