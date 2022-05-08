@@ -17,7 +17,10 @@ public class FilesWalkExample {
         //List<Path> paths = listFiles(path);        
         //List<Path> paths = listDirectories(path);
         //List<Path> paths = findByFileExtension(path, ".txt");
-        List<Path> paths = findByFileName(path, "readme.txt");
+        //List<Path> paths = findByFileName(path, "readme.txt");
+
+        long fileSizeInBytes = 1024 * 1024 * 10; // 10MB
+        List<Path> paths = findByFileSize(path, fileSizeInBytes);
 
         paths.forEach(x -> System.out.println(x));
     }
@@ -78,6 +81,39 @@ public class FilesWalkExample {
                 .collect(Collectors.toList());
         }
 
+        return result;
+    }
+
+    // fileSize in bytes
+    public static List<Path> findByFileSize(Path path, long fileSize)
+        throws IOException {
+
+        if (!Files.isDirectory(path)) {
+            throw new IllegalArgumentException("Path must be a directory!");
+        }
+
+        List<Path> result;
+        // walk file tree, no more recursive loop
+        try (Stream<Path> walk = Files.walk(path)) {
+            result = walk
+                    .filter(Files::isReadable)              // read permission
+                    .filter(p -> !Files.isDirectory(p))     // is a file
+                    .filter(p -> checkFileSize(p, fileSize))
+                    .collect(Collectors.toList());
+        }
+        return result;
+
+    }
+
+    private static boolean checkFileSize(Path path, long fileSize) {
+        boolean result = false;
+        try {
+            if (Files.size(path) >= fileSize) {
+                result = true;
+            }
+        } catch (IOException e) {
+            System.err.println("Unable to get the file size of this file: " + path);
+        }
         return result;
     }
 }
