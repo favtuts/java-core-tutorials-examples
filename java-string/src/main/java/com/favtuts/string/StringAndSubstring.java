@@ -21,6 +21,12 @@ public class StringAndSubstring {
         System.out.println(containsIgnoreCase(name, "java"));      // true
         System.out.println(containsIgnoreCase(name, "FAVTUTS"));    // true
         System.out.println(containsIgnoreCase(name, "favtuts"));    // true
+
+        if (name.indexOf("Java") != -1) {
+            System.out.println("Hello Java"); // print this
+        } else {
+            System.out.println("abc...");
+        }
     }
 
     public static boolean containsIgnoreCase(String str, String subString) {
