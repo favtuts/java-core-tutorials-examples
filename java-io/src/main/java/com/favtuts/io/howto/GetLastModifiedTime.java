@@ -1,11 +1,13 @@
 package com.favtuts.io.howto;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -43,6 +45,8 @@ public class GetLastModifiedTime {
             FileTime fileTime = attr.lastModifiedTime();
             System.out.println("lastModifiedTime: " + formatDateTime(fileTime));
 
+            javaIO(fileName);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -57,5 +61,12 @@ public class GetLastModifiedTime {
             .toLocalDateTime();
         
         return localDateTime.format(DATE_FORMATTER);
+    }
+
+    public static void javaIO(String fileName) {
+        File file = new File(fileName);
+        System.out.println("Before format : " + file.lastModified());
+        SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+        System.out.println("After Format : " + sdf.format(file.lastModified()));
     }
 }
