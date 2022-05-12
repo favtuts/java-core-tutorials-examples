@@ -1,9 +1,12 @@
 package com.favtuts.io.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import org.apache.commons.io.FileUtils;
 
 public class CopyFile1 {
 
@@ -13,7 +16,8 @@ public class CopyFile1 {
         String toFile = "/home/tvt/workspace/favtuts/backup/sample_bk_20220512.csv";
 
         try {
-            copyFileNIO(fromFile, toFile);
+            //copyFileNIO(fromFile, toFile);
+            copyFileCommonIO(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -55,5 +59,13 @@ public class CopyFile1 {
 
         Files.copy(fromFile, toFile, options);*/
     }
+ 
     
+    public static void copyFileCommonIO(String from, String to) throws IOException {
+
+        File fromFile = new File(from);
+        File toFile = new File(to);
+
+        FileUtils.copyFile(fromFile, toFile);
+    }
 }
