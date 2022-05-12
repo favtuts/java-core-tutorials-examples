@@ -17,7 +17,8 @@ public class CopyFile1 {
 
         try {
             //copyFileNIO(fromFile, toFile);
-            copyFileCommonIO(fromFile, toFile);
+            //copyFileCommonIO(fromFile, toFile);
+            copyFileGuava(fromFile, toFile);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -67,5 +68,15 @@ public class CopyFile1 {
         File toFile = new File(to);
 
         FileUtils.copyFile(fromFile, toFile);
+    }
+
+    public static void copyFileGuava(String from, String to) throws IOException {
+
+        File fromFile = new File(from);
+        File toFile = new File(to);
+  
+        // @Beta?
+        com.google.common.io.Files.copy(fromFile, toFile);
+  
     }
 }
