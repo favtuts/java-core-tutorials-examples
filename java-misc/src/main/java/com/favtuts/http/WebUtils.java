@@ -25,4 +25,6 @@ public class WebUtils {
     private String getUserAgent(HttpServletRequest request) {
         return request.getHeader("user-agent");
     }
+
+    
 }
