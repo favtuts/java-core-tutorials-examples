@@ -1,4 +1,4 @@
-package com.favtuts.display;
+package com.favtuts.system;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
