@@ -23,7 +23,33 @@ public class PropertiesFileExamples {
         // writePropertiesFile(configFilePath);
 
         // Load a properties file
-        loadPropertiesFile(configFilePath);
+        // loadPropertiesFile(configFilePath);
+
+        // Load a properties file from classpath
+        loadPropertiesFileClassPath("config.properties");
+    }
+
+    private static void loadPropertiesFileClassPath(String resourceFileName) {
+        try (InputStream input = PropertiesFileExamples.class.getClassLoader().getResourceAsStream(resourceFileName)) {
+
+            Properties prop = new Properties();
+
+            if (input == null) {
+                System.out.println("Sorry, unable to find " + resourceFileName);
+                return;
+            }
+
+            //load a properties file from class path, inside static method
+            prop.load(input);
+
+            //get the property value and print it out
+            System.out.println(prop.getProperty("db.url"));
+            System.out.println(prop.getProperty("db.user"));
+            System.out.println(prop.getProperty("db.password"));
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
     private static void loadPropertiesFile(String configFilePath) {
