@@ -27,7 +27,16 @@ public class SystemEnv {
 
         // Unmodifiable the map of environment variables        
         Map<String, String> env = System.getenv();
-        env.put("CUSTOM_JAVA_HOME", "/opt/java99/"); // throws UnsupportedOperationException
+        //env.put("CUSTOM_JAVA_HOME", "/opt/java99/"); // throws UnsupportedOperationException
+
+        // Display all environment variables 
+        // Java 8
+        env.forEach((k, v) -> System.out.println(k + ":" + v));
+
+        // Classic way to loop a map        
+        for (Map.Entry<String, String> entry : env.entrySet()) {
+            System.out.println(entry.getKey() + " : " + entry.getValue());
+        }
     }
     
 }
