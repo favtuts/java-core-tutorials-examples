@@ -1,7 +1,9 @@
 package com.favtuts.system;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class SystemEnv {
 
@@ -37,6 +39,19 @@ public class SystemEnv {
         for (Map.Entry<String, String> entry : env.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
-    }
-    
+
+        // sort and display the environment variables in alphabetical order
+        LinkedHashMap<String, String> collect =
+                env.entrySet().stream()
+                        .sorted(Map.Entry.comparingByKey())
+                        .collect(
+                                Collectors.toMap(
+                                        Map.Entry::getKey,
+                                        Map.Entry::getValue,
+                                        (oldValue, newValue) -> oldValue,
+                                        LinkedHashMap::new)
+                        );
+
+        collect.forEach((k, v) -> System.out.println(k + ":" + v));
+    }    
 }
