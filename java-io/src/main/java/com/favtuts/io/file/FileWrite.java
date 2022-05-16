@@ -1,5 +1,9 @@
 package com.favtuts.io.file;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -64,6 +68,24 @@ public class FileWrite {
 		    //	StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 
+
+    private static void writeFile_FileWriter(File file, String content) throws IOException {
+
+        try (FileWriter fw = new FileWriter(file);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(content);
+            bw.newLine(); // add new line, System.lineSeparator()
+        }
+
+        // append mode
+        /*try (FileWriter fw = new FileWriter(file, true);
+             BufferedWriter bw = new BufferedWriter(fw)) {
+            bw.write(content);
+            bw.newLine();
+        }*/
+
+    }
+
     // Java 8
     private static void writeFileJava8(Path path, String content) throws IOException {
 
@@ -78,6 +100,22 @@ public class FileWrite {
                 StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
             bw.write(content);
             bw.newLine();
+        }*/
+
+    }
+
+
+    // FileOutputStream is meant for writing streams of raw bytes such as image data.
+    // For writing streams of characters, consider using FileWriter.
+    private static void writeFile_FileOutputStream(File file, byte[] bytes) throws IOException {
+
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(bytes);
+        }
+
+        // append mode
+        /*try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
         }*/
 
     }
