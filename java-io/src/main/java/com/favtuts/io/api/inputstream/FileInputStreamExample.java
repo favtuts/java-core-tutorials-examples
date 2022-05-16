@@ -2,22 +2,35 @@ package com.favtuts.io.api.inputstream;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileInputStreamExample {
 
     public static void main(String[] args) {
         String fileName = "/home/tvt/workspace/favtuts/test.txt";
-
+        String fileUnicode = "/home/tvt/workspace/favtuts/file-unicode.txt";
         // readFileExample1(fileName);
         // readFileExample2(fileName);
         // readFileBetterPerformance(fileName);
         // readFileBetterPerformance2(fileName);
-        readFileBetterInputStreamReader(fileName);
+        // readFileBetterInputStreamReader(fileName);
+
+
+        List<String> lines = Arrays.asList("你好", "我好", "大家好");
+        writeUnicodeClassic(fileUnicode, lines);
+        readFileBetterPerformance(fileUnicode);
     }
 
     private static void readFileBetterInputStreamReader(String fileName) {
@@ -109,6 +122,42 @@ public class FileInputStreamExample {
             while ((content = fis.read()) != -1) {
                 System.out.println((char) content);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // Java 7
+    public static void writeUnicodeJava7(String fileName, List<String> lines) {
+
+        Path path = Paths.get(fileName);
+        try {
+            Files.write(path, lines, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    // in the old days
+    public static void writeUnicodeClassic(String fileName, List<String> lines) {
+
+        File file = new File(fileName);
+
+        try (FileOutputStream fos = new FileOutputStream(file);
+            OutputStreamWriter osw = new OutputStreamWriter(fos, StandardCharsets.UTF_8);
+            BufferedWriter writer = new BufferedWriter(osw)
+        ) {
+            Integer idx = 0;
+            for (String line : lines) {
+                idx += 1;
+                writer.append(line);
+                                
+                //No append new Line with the last item
+                if (idx < lines.size())
+                    writer.newLine();                                
+            }
+            
         } catch (IOException e) {
             e.printStackTrace();
         }
