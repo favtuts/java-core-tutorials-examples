@@ -63,4 +63,22 @@ public class FileWrite {
         // Files.writeString(path, content,
 		    //	StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
+
+    // Java 8
+    private static void writeFileJava8(Path path, String content) throws IOException {
+
+        // default utf_8
+        try (BufferedWriter bw = Files.newBufferedWriter(path)) {
+            bw.write(content);
+            bw.newLine();
+        }
+
+        // append mode
+        /*try (BufferedWriter bw = Files.newBufferedWriter(path,
+                StandardOpenOption.CREATE, StandardOpenOption.APPEND)) {
+            bw.write(content);
+            bw.newLine();
+        }*/
+
+    }
 }
