@@ -1,5 +1,8 @@
 package com.favtuts.io.file;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -15,14 +18,23 @@ public class FileAppend {
 
     public static void main(String[] args) throws IOException {
 
-        Path path = Paths.get("/home/tvt/workspace/favtuts/abc.txt");
-        String content = "hello world" + NEW_LINE;
+        // Path path = Paths.get("/home/tvt/workspace/favtuts/abc.txt");
+        // String content = "hello world" + NEW_LINE;
         // appendToFile(path, content);
 
-        //List<String> list = Arrays.asList("hello", "world", "favtuts");
-        //appendToFileJava8(path, list);
+        // List<String> list = Arrays.asList("hello", "world", "favtuts");
+        // appendToFileJava8(path, list);
+        
 
-        appendToFileJava11(path, content);
+        // appendToFileJava11(path, content);
+
+        File file = new File("/home/tvt/workspace/favtuts/abc.txt");
+        // String content = "hello world" + NEW_LINE;
+        // appendToFileFileWriter(file, content);
+
+
+        List<String> lines = Arrays.asList("hello", "world", "favtuts");
+        appendToFileFileWriter(file, lines);
     }
 
     // Java 7
@@ -71,5 +83,46 @@ public class FileAppend {
         Files.writeString(path, content,
                 StandardOpenOption.CREATE,
                 StandardOpenOption.APPEND);
+    }
+
+    private static void appendToFileFileWriter(File file, String content)
+            throws IOException {
+
+        // default - create and write
+        // if file not exists, create and write
+        // if file exists, truncate and write
+        /*
+         * try (FileWriter fw = new FileWriter(file);
+         * BufferedWriter bw = new BufferedWriter(fw)) {
+         * bw.write(content);
+         * bw.newLine();
+         * }
+         */
+
+        // append mode
+        // if file not exists, create and write
+        // if file exists, append to the end of the file
+        try (FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw)) {
+
+            bw.write(content);
+            bw.newLine(); // add new line, System.lineSeparator()
+
+        }
+
+    }
+
+    private static void appendToFileFileWriter(
+            File file, List<String> lines) throws IOException {
+
+        try (FileWriter fw = new FileWriter(file, true);
+                BufferedWriter bw = new BufferedWriter(fw)) {
+
+            for (String s : lines) {
+                bw.write(s);
+                bw.newLine();
+            }
+        }
+
     }
 }
