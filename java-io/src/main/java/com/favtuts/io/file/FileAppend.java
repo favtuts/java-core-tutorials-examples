@@ -2,6 +2,7 @@ package com.favtuts.io.file;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -11,6 +12,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
 
 public class FileAppend {
 
@@ -24,14 +27,12 @@ public class FileAppend {
 
         // List<String> list = Arrays.asList("hello", "world", "favtuts");
         // appendToFileJava8(path, list);
-        
 
         // appendToFileJava11(path, content);
 
         File file = new File("/home/tvt/workspace/favtuts/abc.txt");
         // String content = "hello world" + NEW_LINE;
         // appendToFileFileWriter(file, content);
-
 
         List<String> lines = Arrays.asList("hello", "world", "favtuts");
         appendToFileFileWriter(file, lines);
@@ -124,5 +125,49 @@ public class FileAppend {
             }
         }
 
+    }
+
+    private static void appendToFileFileOutputStream(File file, String content)
+            throws IOException {
+
+        // append mode
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
+        }
+
+    }
+
+    private static void appendToFileFileUtils(File file, String content)
+            throws IOException {
+
+        // append mode
+        FileUtils.writeStringToFile(
+                file, content, StandardCharsets.UTF_8, true);
+
+    }
+
+    private static void appendToFileClassic(String fileName, String content) throws IOException {
+
+        BufferedWriter bw = null;
+        FileWriter fw = null;
+
+        try {
+            fw = new FileWriter(fileName, true);
+            bw = new BufferedWriter(fw);
+            bw.write(content);
+
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n", e);
+        } finally {
+            try {
+                if (bw != null)
+                    bw.close();
+
+                if (fw != null)
+                    fw.close();
+            } catch (IOException ex) {
+                System.err.format("IOException: %s%n", ex);
+            }
+        }
     }
 }
