@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.List;
 
 public class FileWrite {
 
@@ -14,6 +16,10 @@ public class FileWrite {
     public static void main(String[] args) throws IOException {
         Path path = Paths.get("/home/tvt/workspace/favtuts/aaa.txt");
         writeFile(path, "Hello World 1" + NEW_LINE);
+
+        List<String> list = Arrays.asList("a", "b", "c");
+        //List<String> list = Arrays.asList("你好", "我好", "大家好");
+        writeFile(path, list);
     }
     
     // Java 7
@@ -32,5 +38,29 @@ public class FileWrite {
         // if the file exists, append it
         // Files.write(path, content.getBytes(StandardCharsets.UTF_8),
 		// 			StandardOpenOption.APPEND);
+    }
+
+    private static void writeFile(Path path, List<String> list) throws IOException {
+
+        // Iterable
+        // Files.write(path, list, StandardCharsets.UTF_8);
+
+        // Java 8, default utf_8
+        Files.write(path, list);
+
+    }
+
+
+    // Java 11
+    private static void writeFileJava11(Path path, String content) throws IOException {
+
+        // default utf_8
+        // file does not exists, create and write it
+        // if the file exists, override the content
+        Files.writeString(path, content);
+
+        // Append mode
+        // Files.writeString(path, content,
+		    //	StandardOpenOption.CREATE, StandardOpenOption.APPEND);
     }
 }
