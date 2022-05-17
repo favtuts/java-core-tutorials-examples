@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,7 +13,12 @@ public class FindFileByExtension {
     
     public static void main(String[] args) {
         try {
-            List<String> files = findFiles(Paths.get("/home/tvt/workspace/favtuts"), "png");
+            String folderName = "/home/tvt/workspace/favtuts";
+            //List<String> files = findFiles(Paths.get(folderName), "png");
+
+            String[] fileExtensions = {"png", "jpg", "gif"};
+            List<String> files = findFiles(Paths.get(folderName), fileExtensions);
+
             files.forEach(x -> System.out.println(x));
         } catch (IOException e) {
             e.printStackTrace();
@@ -40,5 +46,44 @@ public class FindFileByExtension {
         }
 
         return result;        
+    }
+
+    public static List<String> findFiles(Path path, String[] fileExtensions) throws IOException {
+
+        if (!Files.isDirectory(path)) {
+            throw new IllegalArgumentException("Path must be a directory!");
+        }
+
+        List<String> result;
+        //try (Stream<Path> walk = Files.walk(path, 1)) {
+        try (Stream<Path> walk = Files.walk(path)) {
+            result = walk
+                    .filter(p -> !Files.isDirectory(p))
+                    // convert path to string
+                    .map(p -> p.toString().toLowerCase())
+                    .filter(f -> isEndWith(f, fileExtensions))
+                    .collect(Collectors.toList());
+        }
+        return result;
+
+    }
+
+    private static boolean isEndWith(String file, String[] fileExtensions) {
+        // Java 8, try this
+        boolean result = Arrays.stream(fileExtensions).anyMatch(file::endsWith);
+        return result;
+
+        // old school style
+        /*
+        boolean result = false;
+        //System.out.println("Checking " + file + " ...");
+        for (String fileExtension : fileExtensions) {            
+            if (file.endsWith(fileExtension)) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+        */
     }
 }
