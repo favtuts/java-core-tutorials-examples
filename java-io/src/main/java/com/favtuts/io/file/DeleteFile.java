@@ -15,6 +15,7 @@ public class DeleteFile {
         deleteFileLegacyIO(fileName);
     }
     
+    // Java 7 NIO IfExists
     private static void deleteFileNoException(String fileName) {
         try {
             boolean result = Files.deleteIfExists(Paths.get(fileName));
@@ -28,6 +29,7 @@ public class DeleteFile {
         }
     }
 
+    // Java 7 NIO
     private static void deleteFileHasException(String fileName) {
         try {
             Files.delete(Paths.get(fileName));
@@ -36,6 +38,7 @@ public class DeleteFile {
         }
     }
 
+    // Java classic
     private static void deleteFileLegacyIO (String fileName) {
         try {
             File file = new File(fileName);
