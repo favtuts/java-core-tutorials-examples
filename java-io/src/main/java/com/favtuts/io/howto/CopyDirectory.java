@@ -1,7 +1,11 @@
 package com.favtuts.io.howto;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +26,8 @@ public class CopyDirectory {
 
             //copyDirectoryFileVisitor(fromDirectory, toToDirectory);
             //copyFileCommonIO(fromDirectory, toToDirectory);
-            copyDirectoryJavaNIO(Paths.get(fromDirectory),Paths.get(toToDirectory));
+            //copyDirectoryJavaNIO(Paths.get(fromDirectory),Paths.get(toToDirectory));
+            copyDirectoryLegacyIO(new File(fromDirectory), new File(toToDirectory));
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,6 +91,74 @@ public class CopyDirectory {
             copyDirectoryJavaNIO(source, target);
         } catch (IOException e) {
             System.err.println("IO errors : " + e.getMessage());
+        }
+
+    }
+
+
+    public static void copyDirectoryLegacyIO(File source, File target) throws IOException {
+
+        if (source.isDirectory()) {
+
+            //if directory not exists, create it
+            if (!target.exists()) {
+                if (target.mkdir()) {
+                    System.out.println("Directory copied from "
+                            + source + "  to " + target);
+                } else {
+                    System.err.println("Unable to create directory : " + target);
+                }
+            }
+
+            // list all the directory contents, file walker
+            String[] files = source.list();
+            if (files == null) {
+                return;
+            }
+
+            for (String file : files) {
+                //construct the src and dest file structure
+                File srcFile = new File(source, file);
+                File destFile = new File(target, file);
+                //recursive copy
+                copyDirectoryLegacyIO(srcFile, destFile);
+            }
+
+        } else {
+
+            //if file, then copy it
+            //Use bytes stream to support all file types
+            InputStream in = null;
+            OutputStream out = null;
+
+            try {
+
+                in = new FileInputStream(source);
+                out = new FileOutputStream(target);
+
+                byte[] buffer = new byte[1024];
+
+                int length;
+                //copy the file content in bytes
+                while ((length = in.read(buffer)) > 0) {
+                    out.write(buffer, 0, length);
+                }
+
+                System.out.println("File copied from " + source + " to " + target);
+
+            } catch (IOException e) {
+
+                System.err.println("IO errors : " + e.getMessage());
+
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
+
+                if (out != null) {
+                    out.close();
+                }
+            }
         }
 
     }
