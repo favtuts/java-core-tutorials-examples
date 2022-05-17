@@ -92,4 +92,27 @@ public class FindFileByExtension {
         return result;
         */
     }
+
+
+    /*public static String[] findFiles(File dir, String fileExtension) {
+
+        // one level only, need recursive loop for sub folders
+        File[] files = dir.listFiles(new FileExtensionFilter(fileExtension));
+
+        return null;
+
+    }
+
+    static class FileExtensionFilter implements FilenameFilter {
+
+        private String fileExtension;
+
+        public FileExtensionFilter(String fileExtension) {
+            this.fileExtension = fileExtension;
+        }
+
+        public boolean accept(File dir, String fileName) {
+            return (fileName.endsWith(fileExtension));
+        }
+    }*/
 }
