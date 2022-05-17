@@ -1,5 +1,6 @@
 package com.favtuts.io.file;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,7 +11,8 @@ public class DeleteFile {
         
         String fileName = "/home/tvt/workspace/favtuts/test.txt";
         // deleteFileHasException(fileName);
-        deleteFileNoException(fileName);
+        // deleteFileNoException(fileName);
+        deleteFileLegacyIO(fileName);
     }
     
     private static void deleteFileNoException(String fileName) {
@@ -30,6 +32,19 @@ public class DeleteFile {
         try {
             Files.delete(Paths.get(fileName));
         } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void deleteFileLegacyIO (String fileName) {
+        try {
+            File file = new File(fileName);
+            if (file.delete()) {
+                System.out.println(file.getName() + " is deleted!");
+            } else {
+                System.out.println("Sorry, unable to delete the file.");
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
