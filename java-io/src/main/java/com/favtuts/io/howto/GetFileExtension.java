@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class GetFileExtension {
 
     private static final String OUTPUT_FORMAT = "Path: %-30s -> File Extension: %s";
@@ -29,7 +31,8 @@ public class GetFileExtension {
         for (String file : files) {
             //String output = String.format(OUTPUT_FORMAT, file, getFileExtension(file));
             //String output = String.format(OUTPUT_FORMAT, file, getFileExtensionImproved(file));
-            String output = String.format(OUTPUT_FORMAT, file, getFileExtensionKnownExtension(file));
+            //String output = String.format(OUTPUT_FORMAT, file, getFileExtensionKnownExtension(file));
+            String output = String.format(OUTPUT_FORMAT, file, FilenameUtils.getExtension(file));
             System.out.println(output);
         }
     }
@@ -117,5 +120,5 @@ public class GetFileExtension {
         //...extra
         return result;
     }
-    
+
 }
