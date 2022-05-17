@@ -61,7 +61,13 @@ public class FindFileByExtension {
                     .filter(p -> !Files.isDirectory(p))
                     // convert path to string
                     .map(p -> p.toString().toLowerCase())
-                    .filter(f -> isEndWith(f, fileExtensions))
+                    //.filter(f -> isEndWith(f, fileExtensions))
+
+                    // lambda
+                    //.filter(f -> Arrays.stream(fileExtensions).anyMatch(ext -> f.endsWith(ext)))
+
+                    // method reference
+                    .filter(f -> Arrays.stream(fileExtensions).anyMatch(f::endsWith))
                     .collect(Collectors.toList());
         }
         return result;
