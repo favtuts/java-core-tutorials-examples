@@ -1,5 +1,6 @@
 package com.favtuts.io.file;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Path;
@@ -9,8 +10,9 @@ public class FileExist {
 
     public static void main(String[] args) {
         
-        //Path path = Paths.get("/home/tvt/workspace/favtuts/test/test.log");
-        Path path = Paths.get("/home/tvt/workspace/favtuts/test/soft-link");
+        //String fileName = "/home/tvt/workspace/favtuts/test/test.log";
+        String fileName = "/home/tvt/workspace/favtuts/test/soft-link";        
+        Path path = Paths.get(fileName);
 
         // check exists for file and directory
         if (Files.exists(path)) {
@@ -39,6 +41,20 @@ public class FileExist {
         if(Files.notExists(path)){
             System.out.println("File doesn't exist");
         }
+
+        fileExists(fileName);
+    }
+
+    // legacy io, no support for symbolic links
+    private static void fileExists(String fileName){
+
+        File file = new File(fileName);
+        if(file.exists() && !file.isDirectory()){
+            System.out.println("File exists!");
+        }else{
+            System.out.println("File doesn't exist");
+        }
+
     }
     
 }
