@@ -19,10 +19,10 @@ public class SFTPFileTransfer {
     public static void main(String[] args) {
         
         // local
-        String localFile = "/home/mkyong/hello.sh";
+        String localFile = "/home/favtuts/hello.sh";
 
         // remote server
-        String remoteFile = "/home/mkyong/test.sh";
+        String remoteFile = "/home/favtuts/test.sh";
 
         Session jschSession = null;
 
