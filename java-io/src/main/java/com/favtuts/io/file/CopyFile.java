@@ -12,7 +12,7 @@ import java.nio.file.Paths;
 
 import org.apache.commons.io.FileUtils;
 
-public class CopyFile1 {
+public class CopyFile {
 
     public static void main(String[] args) {
         
