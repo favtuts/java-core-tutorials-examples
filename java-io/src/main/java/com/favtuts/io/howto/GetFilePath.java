@@ -1,5 +1,6 @@
 package com.favtuts.io.howto;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
@@ -10,6 +11,30 @@ public class GetFilePath {
     
     public static void main(String[] args) {
 
+        // Java Legacy IO
+         // full file path
+         File file1 = new File("/home/tvt/workspace/favtuts/test/file.txt");
+         System.out.println("[File] : " + file1);
+         printFilePath(file1);
+ 
+         // a file name
+         File file2 = new File("file.txt");
+         System.out.println("\n[File] : " + file2);
+         printFilePath(file2);
+ 
+         // a soft or symbolic link
+         File file3 = new File("/home/tvt/workspace/favtuts/test/soft-link");
+         System.out.println("\n[File] : " + file3);
+         printFilePath(file3);
+ 
+         // a file contain `..`
+         File file4 = new File("/home/tvt/workspace/favtuts/test/../hello.txt");
+         System.out.println("\n[File] : " + file4);
+         printFilePath(file4);
+
+
+        // Java NIO Path
+        /*
         // full path
         Path path1 = Paths.get("/home/tvt/workspace/favtuts/test/file.txt");
         System.out.println("\n[Path] : " + path1);
@@ -29,6 +54,7 @@ public class GetFilePath {
         Path path4 = Paths.get("/home/tvt/workspace/favtuts/test/../hello.txt");
         System.out.println("\n[Path] : " + path4);
         printPath(path4);
+        */
         
     }
 
@@ -63,5 +89,33 @@ public class GetFilePath {
             e.printStackTrace();
         }
 
+    }
+
+
+    // If a single file name, not full path, the file refer to
+    // System.getProperty("user.dir") + file
+    static void printFilePath(File file) {
+        // print File = print file.getPath()
+        System.out.printf("%-25s : %s%n", "file.getPath()", file.getPath());
+        System.out.printf("%-25s : %s%n", "file.getAbsolutePath()",
+                                              file.getAbsolutePath());
+        try {
+            System.out.printf("%-25s : %s%n", "file.getCanonicalPath()",
+                                                file.getCanonicalPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.printf("%-25s : %s%n", "Parent Path", getParentPath(file));
+    }
+
+    // if unable to get parent, try substring to get the parent folder.
+    private static String getParentPath(File file) {
+        if (file.getParent() == null) {
+            String absolutePath = file.getAbsolutePath();
+            return absolutePath.substring(0,
+                          absolutePath.lastIndexOf(File.separator));
+        } else {
+            return file.getParent();
+        }
     }
 }
