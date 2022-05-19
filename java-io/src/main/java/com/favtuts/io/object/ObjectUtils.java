@@ -11,12 +11,12 @@ public class ObjectUtils {
 
         Address address = new Address("abc", "Malaysia");
 
-        // object -> file
-        try (FileOutputStream fos = new FileOutputStream("address.obj");
-             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
-            oos.writeObject(address);
-            oos.flush();
-        }
+        // // object -> file
+        // try (FileOutputStream fos = new FileOutputStream("address.obj");
+        //      ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+        //     oos.writeObject(address);
+        //     oos.flush();
+        // }
 
         Address result = null;
         // file -> object
