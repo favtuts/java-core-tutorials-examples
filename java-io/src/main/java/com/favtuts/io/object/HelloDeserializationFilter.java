@@ -1,18 +1,13 @@
 package com.favtuts.io.object;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputFilter;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.math.BigDecimal;
 
 public class HelloDeserializationFilter {
+
     public static void main(String[] args) {
-        // this ok
-        // Person person = new Person("favtuts", 40, new BigDecimal(900));
+
+        //Person person = new Person("favtuts", 40, new BigDecimal(900));
 
         // reject this Person2, only allow Person class
         Person2 person = new Person2("favtuts", 40, new BigDecimal(900), "test");
@@ -21,8 +16,9 @@ public class HelloDeserializationFilter {
 
         // only allow to deserialize com.favtuts.io.object.Person and java.base/*
         // !* reject all
-        ObjectInputFilter filter = ObjectInputFilter.Config.createFilter(
-                "com.favtuts.io.object.Person;java.base/*;!*");
+        ObjectInputFilter filter =
+                ObjectInputFilter.Config.createFilter(
+                        "com.favtuts.io.object.Person;java.base/*;!*");
 
         Person p = (Person) convertBytesToObject(bytes, filter);
 
@@ -41,7 +37,7 @@ public class HelloDeserializationFilter {
         throw new RuntimeException();
     }
 
-    // Convert byte[] to object, with filter
+    // Convert byte[] to object
     public static Object convertBytesToObject(byte[] bytes, ObjectInputFilter filter) {
         InputStream is = new ByteArrayInputStream(bytes);
         try (ObjectInputStream ois = new ObjectInputStream(is)) {
@@ -55,4 +51,5 @@ public class HelloDeserializationFilter {
         }
         throw new RuntimeException();
     }
+
 }

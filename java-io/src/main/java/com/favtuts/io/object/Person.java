@@ -5,12 +5,16 @@ import java.math.BigDecimal;
 
 public class Person implements Serializable {
     
-    private static final long serialVersionUID = -1;
+    // optional, if missing, JVM will create it.
+    // better declare as a version control.
+    private static final long serialVersionUID = 1L;
+
     private String name;
     private int age;
 
     // if transient, JVM ignore this field for serialization
     private transient BigDecimal salary;
+    // private BigDecimal salary;
 
     public Person(String name, int age, BigDecimal salary) {
         this.name = name;
