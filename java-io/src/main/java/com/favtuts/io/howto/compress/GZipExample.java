@@ -1,6 +1,7 @@
 package com.favtuts.io.howto.compress;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.zip.*;
 
@@ -19,7 +20,11 @@ public class GZipExample {
         try {
 
             //GZipExample.compressGzip(source, target);
-            GZipExample.compressGzipNio(source, target);
+            //GZipExample.compressGzipNio(source, target);
+
+            // Compress String Data to Gzip
+            target = Paths.get("/home/tvt/workspace/favtuts/string_data.gz");
+            GZipExample.compressStringToGzip("hello world", target);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,6 +56,17 @@ public class GZipExample {
                                       new FileOutputStream(target.toFile()))) {
   
             Files.copy(source, gos);
+  
+        }
+  
+    }
+
+    public static void compressStringToGzip(String data, Path target) throws IOException {
+
+        try (GZIPOutputStream gos = new GZIPOutputStream(
+                                      new FileOutputStream(target.toFile()))) {
+  
+            gos.write(data.getBytes(StandardCharsets.UTF_8));
   
         }
   
