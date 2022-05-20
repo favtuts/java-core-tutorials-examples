@@ -1,7 +1,10 @@
 package com.favtuts.io.howto.compress;
 
+import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
 import java.io.*;
@@ -31,7 +34,12 @@ public class TarGzipExample {
             createTarGzipFolder(source);
             */
 
-            createTarGzipFilesOnDemand();
+            // createTarGzipFilesOnDemand();
+
+            // decompress .tar.gz
+            Path source = Paths.get("/home/tvt/workspace/favtuts/output.tar.gz");
+            Path target = Paths.get("/home/tvt/workspace/favtuts/tartest");
+            decompressTarGzipFile(source, target);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -190,4 +198,58 @@ public class TarGzipExample {
 
     }
 
+
+    public static void decompressTarGzipFile(Path source, Path target)
+        throws IOException {
+
+        if (Files.notExists(source)) {
+            throw new IOException("File doesn't exists!");
+        }
+
+        try (InputStream fi = Files.newInputStream(source);
+             BufferedInputStream bi = new BufferedInputStream(fi);
+             GzipCompressorInputStream gzi = new GzipCompressorInputStream(bi);
+             TarArchiveInputStream ti = new TarArchiveInputStream(gzi)) {
+
+            ArchiveEntry entry;
+            while ((entry = ti.getNextEntry()) != null) {
+
+                // create a new path, zip slip validate
+                Path newPath = zipSlipProtect(entry, target);
+
+                if (entry.isDirectory()) {
+                    Files.createDirectories(newPath);
+                } else {
+
+                    // check parent folder again
+                    Path parent = newPath.getParent();
+                    if (parent != null) {
+                        if (Files.notExists(parent)) {
+                            Files.createDirectories(parent);
+                        }
+                    }
+
+                    // copy TarArchiveInputStream to Path newPath
+                    Files.copy(ti, newPath, StandardCopyOption.REPLACE_EXISTING);
+
+                }
+            }
+        }
+    }
+
+    private static Path zipSlipProtect(ArchiveEntry entry, Path targetDir)
+        throws IOException {
+
+        Path targetDirResolved = targetDir.resolve(entry.getName());
+
+        // make sure normalized file still has targetDir as its prefix,
+        // else throws exception
+        Path normalizePath = targetDirResolved.normalize();
+
+        if (!normalizePath.startsWith(targetDir)) {
+            throw new IOException("Bad entry: " + entry.getName());
+        }
+
+        return normalizePath;
+    }
 }
