@@ -32,7 +32,10 @@ public class GZipExample {
             GZipExample.compressStringToGzip("hello world", target);
             */
 
-            GZipExample.decompressGzip(source, target);
+            
+            // GZipExample.decompressGzip(source, target);
+            GZipExample.decompressGzipNio(source, target);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -96,5 +99,15 @@ public class GZipExample {
 
         }
 
+    }
+
+    public static void decompressGzipNio(Path source, Path target) throws IOException {
+
+        try (GZIPInputStream gis = new GZIPInputStream(
+                                      new FileInputStream(source.toFile()))) {
+  
+            Files.copy(gis, target);
+        }
+  
     }
 }
