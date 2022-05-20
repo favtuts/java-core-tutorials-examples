@@ -9,8 +9,12 @@ public class GZipExample {
     public static void main(String[] args) {
 
         // compress a file
-        Path source = Paths.get("/home/tvt/workspace/favtuts/sitemap.xml");
-        Path target = Paths.get("/home/tvt/workspace/favtuts/sitemap.xml.gz");
+        // Path source = Paths.get("/home/tvt/workspace/favtuts/sitemap.xml");
+        // Path target = Paths.get("/home/tvt/workspace/favtuts/sitemap.xml.gz");
+
+        // decompress
+        Path source = Paths.get("/home/tvt/workspace/favtuts/sitemap.xml.gz");
+        Path target = Paths.get("/home/tvt/workspace/favtuts/sitemap3.xml");
 
         if (Files.notExists(source)) {
             System.err.printf("The path %s doesn't exist!", source);
@@ -23,8 +27,12 @@ public class GZipExample {
             //GZipExample.compressGzipNio(source, target);
 
             // Compress String Data to Gzip
+            /*
             target = Paths.get("/home/tvt/workspace/favtuts/string_data.gz");
             GZipExample.compressStringToGzip("hello world", target);
+            */
+
+            GZipExample.decompressGzip(source, target);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,5 +78,23 @@ public class GZipExample {
   
         }
   
+    }
+
+
+    public static void decompressGzip(Path source, Path target) throws IOException {
+
+        try (GZIPInputStream gis = new GZIPInputStream(
+                                      new FileInputStream(source.toFile()));
+             FileOutputStream fos = new FileOutputStream(target.toFile())) {
+
+            // copy GZIPInputStream to FileOutputStream
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = gis.read(buffer)) > 0) {
+                fos.write(buffer, 0, len);
+            }
+
+        }
+
     }
 }
