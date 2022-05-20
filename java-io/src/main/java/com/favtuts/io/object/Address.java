@@ -10,6 +10,9 @@ public class Address implements Serializable {
     String street;
     String country;
 
+    public Address() {        
+    }
+
     public Address(String street, String country) {
         this.street = street;
         this.country = country;
