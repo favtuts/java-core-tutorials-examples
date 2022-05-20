@@ -18,7 +18,8 @@ public class GZipExample {
 
         try {
 
-            GZipExample.compressGzip(source, target);
+            //GZipExample.compressGzip(source, target);
+            GZipExample.compressGzipNio(source, target);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,5 +43,16 @@ public class GZipExample {
 
         }
 
+    }
+
+    public static void compressGzipNio(Path source, Path target) throws IOException {
+
+        try (GZIPOutputStream gos = new GZIPOutputStream(
+                                      new FileOutputStream(target.toFile()))) {
+  
+            Files.copy(source, gos);
+  
+        }
+  
     }
 }
