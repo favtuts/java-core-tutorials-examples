@@ -1,19 +1,11 @@
 package com.favtuts.io.howto.compress;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URI;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.nio.file.*;
+import java.util.*;
+import java.util.zip.*;
+
 
 public class ZipFileExample {
 
@@ -24,7 +16,8 @@ public class ZipFileExample {
 
         try {
             // zipSingleFile(source, zipFileName);
-            zipSingleFileNio(source, zipFileName);
+            // zipSingleFileNio(source, zipFileName);
+            zipFileWithoutSaveLocal(zipFileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -76,5 +69,32 @@ public class ZipFileExample {
             // Copy a file into the zip file path
             Files.copy(source, pathInZipfile, StandardCopyOption.REPLACE_EXISTING);
         }
+    }
+
+    // create a file on demand (without save locally) and add to zip
+    public static void zipFileWithoutSaveLocal(String zipFileName) throws IOException {
+
+        String data = "Test data \n123\n456";
+        String fileNameInZip = "abc.txt";
+
+        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(zipFileName))) {
+
+            ZipEntry zipEntry = new ZipEntry(fileNameInZip);
+            zos.putNextEntry(zipEntry);
+
+            ByteArrayInputStream bais = new ByteArrayInputStream(data.getBytes());
+            // one line, able to handle large size?
+            //zos.write(bais.readAllBytes());
+
+            // play safe
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = bais.read(buffer)) > 0) {
+                zos.write(buffer, 0, len);
+            }
+
+            zos.closeEntry();
+        }
+
     }
 }
