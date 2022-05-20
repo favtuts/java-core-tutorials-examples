@@ -34,7 +34,13 @@ public class GZipExample {
 
             
             // GZipExample.decompressGzip(source, target);
-            GZipExample.decompressGzipNio(source, target);
+            // GZipExample.decompressGzipNio(source, target);
+
+            byte[] bytes = GZipExample.decompressGzipToBytes(source);
+            // do task for the byte[]
+
+            //convert byte[] to string for display
+            System.out.println(new String(bytes, StandardCharsets.UTF_8));
 
 
         } catch (IOException e) {
@@ -109,5 +115,26 @@ public class GZipExample {
             Files.copy(gis, target);
         }
   
+    }
+
+    // decompress a Gzip file into a byte arrays
+    public static byte[] decompressGzipToBytes(Path source) throws IOException {
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        try (GZIPInputStream gis = new GZIPInputStream(
+                                      new FileInputStream(source.toFile()))) {
+
+            // copy GZIPInputStream to ByteArrayOutputStream
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = gis.read(buffer)) > 0) {
+                output.write(buffer, 0, len);
+            }
+
+        }
+
+        return output.toByteArray();
+
     }
 }
