@@ -1,6 +1,7 @@
 package com.favtuts.io.howto.compress;
 
 import java.io.*;
+import java.net.URI;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.*;
@@ -20,7 +21,8 @@ public class ZipDirectoryExample {
 
         try {
 
-            ZipDirectoryExample.zipFolder(source);
+            // ZipDirectoryExample.zipFolder(source);
+            ZipDirectoryExample.zipFolderNio(source);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -82,6 +84,66 @@ public class ZipDirectoryExample {
 
             });
         }
+    }
+
+
+    public static void zipFolderNio(Path source) throws IOException {
+
+        // get current working directory
+        String currentPath = System.getProperty("user.dir") + File.separator;
+
+        // get folder name as zip file name
+        // can be other extension, .foo .bar .whatever
+        String zipFileName = source.getFileName().toString() + ".zip";
+        URI uri = URI.create("jar:file:" + currentPath + zipFileName);
+
+        Files.walkFileTree(source, new SimpleFileVisitor<>() {
+            @Override
+            public FileVisitResult visitFile(Path file,
+                BasicFileAttributes attributes) {
+
+                // Copying of symbolic links not supported
+                if (attributes.isSymbolicLink()) {
+                    return FileVisitResult.CONTINUE;
+                }
+
+                Map<String, String> env = new HashMap<>();
+                env.put("create", "true");
+
+                try (FileSystem zipfs = FileSystems.newFileSystem(uri, env)) {
+
+                    Path targetFile = source.relativize(file);
+                    Path pathInZipfile = zipfs.getPath(targetFile.toString());
+
+                    // NoSuchFileException, need create parent directories in zip path
+                    if (pathInZipfile.getParent() != null) {
+                        Files.createDirectories(pathInZipfile.getParent());
+                    }
+
+                    // copy file attributes
+                    CopyOption[] options = {
+                            StandardCopyOption.REPLACE_EXISTING,
+                            StandardCopyOption.COPY_ATTRIBUTES,
+                            LinkOption.NOFOLLOW_LINKS
+                    };
+                    // Copy a file into the zip file path
+                    Files.copy(file, pathInZipfile, options);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                return FileVisitResult.CONTINUE;
+            }
+
+            @Override
+            public FileVisitResult visitFileFailed(Path file, IOException exc) {
+                System.err.printf("Unable to zip : %s%n%s%n", file, exc);
+                return FileVisitResult.CONTINUE;
+            }
+
+        });
+
     }
     
 }
