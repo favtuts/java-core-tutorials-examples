@@ -1,26 +1,24 @@
 package com.favtuts.io.howto;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.io.*;
+import java.nio.file.*;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
+import net.lingala.zip4j.*;
+
 
 public class ZipFileUnZipExample {
 
     public static void main(String[] args) {
-        
-        //Path source = Paths.get("/home/tvt/workspace/favtuts/test-files-only.zip");
+
+        // Path source = Paths.get("/home/tvt/workspace/favtuts/test-files-only.zip");
         Path source = Paths.get("/home/tvt/workspace/favtuts/test-files-folders.zip");
         Path target = Paths.get("/home/tvt/workspace/favtuts/zip/");
 
         try {
 
-            unzipFolder(source, target);
+            //unzipFolder(source, target);
+            unzipFolderZip4j(source, target);
             System.out.println("Done");
 
         } catch (IOException e) {
@@ -41,8 +39,8 @@ public class ZipFileUnZipExample {
                 // example 1.1
                 // some zip stored files and folders separately
                 // e.g data/
-                //     data/folder/
-                //     data/folder/file.txt
+                // data/folder/
+                // data/folder/file.txt
                 if (zipEntry.getName().endsWith(File.separator)) {
                     isDirectory = true;
                 }
@@ -66,13 +64,15 @@ public class ZipFileUnZipExample {
                     Files.copy(zis, newPath, StandardCopyOption.REPLACE_EXISTING);
 
                     // copy files, classic
-                    /*try (FileOutputStream fos = new FileOutputStream(newPath.toFile())) {
-                        byte[] buffer = new byte[1024];
-                        int len;
-                        while ((len = zis.read(buffer)) > 0) {
-                            fos.write(buffer, 0, len);
-                        }
-                    }*/
+                    /*
+                     * try (FileOutputStream fos = new FileOutputStream(newPath.toFile())) {
+                     * byte[] buffer = new byte[1024];
+                     * int len;
+                     * while ((len = zis.read(buffer)) > 0) {
+                     * fos.write(buffer, 0, len);
+                     * }
+                     * }
+                     */
                 }
 
                 zipEntry = zis.getNextEntry();
@@ -86,7 +86,7 @@ public class ZipFileUnZipExample {
 
     // protect zip slip attack
     public static Path zipSlipProtect(ZipEntry zipEntry, Path targetDir)
-        throws IOException {
+            throws IOException {
 
         // test zip slip vulnerability
         // Path targetDirResolved = targetDir.resolve("../../" + zipEntry.getName());
@@ -102,5 +102,13 @@ public class ZipFileUnZipExample {
 
         return normalizePath;
     }
-    
+
+    // it takes `File` as arguments
+    public static void unzipFolderZip4j(Path source, Path target)
+            throws IOException {
+
+        new ZipFile(source.toFile())
+                .extractAll(target.toString());
+
+    }
 }

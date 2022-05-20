@@ -6,6 +6,8 @@ import java.nio.file.*;
 import java.util.*;
 import java.util.zip.*;
 
+import net.lingala.zip4j.ZipFile;
+
 
 public class ZipFileExample {
 
@@ -95,6 +97,22 @@ public class ZipFileExample {
 
             zos.closeEntry();
         }
+
+    }
+
+
+    public static void zip4j() throws IOException {
+
+        // zip file with a single file
+        new ZipFile("filename.zip").addFile("file.txt");
+
+        // zip file with multiple files
+        List<File> files = Arrays.asList(
+                new File("file1.txt"), new File("file2.txt"));
+        new ZipFile("filename.zip").addFiles(files);
+
+        // zip file with a folder
+        new ZipFile("filename.zip").addFolder(new File("/home/favtuts/folder"));
 
     }
 }
