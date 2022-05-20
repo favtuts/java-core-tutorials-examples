@@ -4,14 +4,8 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.SimpleFileVisitor;
+import java.io.*;
+import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 import java.util.List;
@@ -31,9 +25,13 @@ public class TarGzipExample {
             createTarGzipFiles(paths, output);
             */
 
+            /*
             // tar.gz a folder
             Path source = Paths.get("/home/tvt/workspace/favtuts/test");
             createTarGzipFolder(source);
+            */
+
+            createTarGzipFilesOnDemand();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -136,6 +134,59 @@ public class TarGzipExample {
 
             tOut.finish();
         }
+
+    }
+
+
+    public static void createTarGzipFilesOnDemand() throws IOException {
+
+        String data1 = "Test data 1";
+        String fileName1 = "111.txt";
+
+        String data2 = "Test data 2 3 4";
+        String fileName2 = "folder/222.txt";
+
+        String outputTarGzip = "/home/tvt/workspace/favtuts/output.tar.gz";
+
+        try (OutputStream fOut = Files.newOutputStream(Paths.get(outputTarGzip));
+             BufferedOutputStream buffOut = new BufferedOutputStream(fOut);
+             GzipCompressorOutputStream gzOut = new GzipCompressorOutputStream(buffOut);
+             TarArchiveOutputStream tOut = new TarArchiveOutputStream(gzOut)) {
+
+            createTarArchiveEntry(fileName1, data1, tOut);
+            createTarArchiveEntry(fileName2, data2, tOut);
+
+            tOut.finish();
+        }
+
+    }
+
+    private static void createTarArchiveEntry(String fileName,
+                                              String data,
+                                              TarArchiveOutputStream tOut)
+                                              throws IOException {
+
+        byte[] dataInBytes = data.getBytes();
+
+        // create a byte[] input stream
+        ByteArrayInputStream baOut1 = new ByteArrayInputStream(dataInBytes);
+
+        TarArchiveEntry tarEntry = new TarArchiveEntry(fileName);
+
+        // need defined the file size, else error
+        tarEntry.setSize(dataInBytes.length);
+        // tarEntry.setSize(baOut1.available()); alternative
+
+        tOut.putArchiveEntry(tarEntry);
+
+        // copy ByteArrayInputStream to TarArchiveOutputStream
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = baOut1.read(buffer)) > 0) {
+            tOut.write(buffer, 0, len);
+        }
+
+        tOut.closeArchiveEntry();
 
     }
 
