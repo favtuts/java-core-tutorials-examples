@@ -14,6 +14,7 @@ public class CreateFile {
     public static void main(String[] args) {
 
         try {
+            /*
             Path path = Paths.get("/home/tvt/workspace/favtuts/temp/test1.log");
 
             Set<PosixFilePermission> perms = EnumSet.of(
@@ -26,6 +27,14 @@ public class CreateFile {
                     PosixFilePermission.OTHERS_READ,
                     PosixFilePermission.OTHERS_WRITE,
                     PosixFilePermission.OTHERS_EXECUTE);
+
+            Files.createFile(path, PosixFilePermissions.asFileAttribute(perms));
+            */
+
+            Path path = Paths.get("/home/tvt/workspace/favtuts/temp/test2.log");
+
+            Set<PosixFilePermission> perms =
+                    PosixFilePermissions.fromString("rwxrwxrwx");
 
             Files.createFile(path, PosixFilePermissions.asFileAttribute(perms));
             
