@@ -48,4 +48,17 @@ public class CreateTempFile {
 
     }
 
+
+    /*private void createTempFileIO() {
+
+        try {
+
+            File file = File.createTempFile("abc_", ".binary");
+            System.out.println(file);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
 }
