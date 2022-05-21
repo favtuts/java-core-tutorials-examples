@@ -31,13 +31,22 @@ public class CreateFile {
             Files.createFile(path, PosixFilePermissions.asFileAttribute(perms));
             */
 
+            /*
             Path path = Paths.get("/home/tvt/workspace/favtuts/temp/test2.log");
 
             Set<PosixFilePermission> perms =
                     PosixFilePermissions.fromString("rwxrwxrwx");
 
             Files.createFile(path, PosixFilePermissions.asFileAttribute(perms));
-            
+            */
+
+            Path path = Paths.get("/home/tvt/workspace/favtuts/temp/test3.log");
+
+            Set<PosixFilePermission> perms =
+                    PosixFilePermissions.fromString("rwxrwxrwx");
+            Files.createFile(path);
+            Files.setPosixFilePermissions(path, perms);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
