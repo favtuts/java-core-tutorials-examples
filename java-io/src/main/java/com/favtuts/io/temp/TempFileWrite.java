@@ -1,18 +1,8 @@
 package com.favtuts.io.temp;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.io.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class TempFileWrite {
 
@@ -43,18 +33,16 @@ public class TempFileWrite {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        /*
-        try {
 
-            // create a temporary file
+        /*try {
+
             Path tempFile = Files.createTempFile(null, null);
             System.out.println(tempFile);
 
-            // write a line
+            // writes a line
             Files.write(tempFile, "Hello World\n".getBytes(StandardCharsets.UTF_8));
 
-            // append a list of lines, add new lines automatically
+            // append a list of lines, add new line at the end
             List<String> content = Arrays.asList("Line 1", "Line 2", "Line 3");
             Files.write(tempFile, content, StandardOpenOption.APPEND);
 
@@ -70,9 +58,11 @@ public class TempFileWrite {
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-        */
-        
+        }*/
+
     }
-    
+
+    public static void writeTempFileLegacyIO(){
+        //...
+    }
 }
