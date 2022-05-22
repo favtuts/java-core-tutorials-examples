@@ -3,6 +3,8 @@ package com.favtuts.io.directory;
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.Comparator;
+import java.util.stream.Stream;
 
 public class DirectoryDelete {
     
@@ -18,9 +20,10 @@ public class DirectoryDelete {
 
         try {
 
-            //createDummyFiles();
+            createDummyFiles();
 
-            deleteDirectoryJava7(dir);
+            //deleteDirectoryJava7(dir);
+            deleteDirectoryJava8(dir);
 
             System.out.println("Done");
 
@@ -62,4 +65,28 @@ public class DirectoryDelete {
 
     }
     
+
+    public static void deleteDirectoryJava8(String dir) throws IOException {
+
+        Path path = Paths.get(dir);
+
+        // read java doc, Files.walk need close the resources
+        // try-with-resources to ensure that the stream's open directories are closed
+        try (Stream<Path> walk = Files.walk(path)) {
+            walk
+                    .sorted(Comparator.reverseOrder())
+                    .forEach(DirectoryDelete::deleteDirectoryJava8Extract);
+        }
+
+    }
+
+    // extract method to handle exception in lambda
+    public static void deleteDirectoryJava8Extract(Path path) {
+        try {
+            Files.delete(path);
+        } catch (IOException e) {
+            System.err.printf("Unable to delete this path : %s%n%s", path, e);
+        }
+    }
+
 }
