@@ -1,10 +1,12 @@
 package com.favtuts.io.directory;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Comparator;
 import java.util.stream.Stream;
+
+import org.apache.commons.io.FileUtils;
 
 public class DirectoryDelete {
     
@@ -23,7 +25,9 @@ public class DirectoryDelete {
             createDummyFiles();
 
             //deleteDirectoryJava7(dir);
-            deleteDirectoryJava8(dir);
+            //deleteDirectoryJava8(dir);
+            //FileUtils.deleteDirectory(new File(dir));
+            deleteDirectoryLegacyIO(new File(dir));
 
             System.out.println("Done");
 
@@ -87,6 +91,26 @@ public class DirectoryDelete {
         } catch (IOException e) {
             System.err.printf("Unable to delete this path : %s%n%s", path, e);
         }
+    }
+
+
+    public static void deleteDirectoryLegacyIO(File file) {
+
+        File[] list = file.listFiles();
+        if (list != null) {
+            for (File temp : list) {
+                //recursive delete
+                System.out.println("Visit " + temp);
+                deleteDirectoryLegacyIO(temp);
+            }
+        }
+
+        if (file.delete()) {
+            System.out.printf("Delete : %s%n", file);
+        } else {
+            System.err.printf("Unable to delete file or directory : %s%n", file);
+        }
+
     }
 
 }
