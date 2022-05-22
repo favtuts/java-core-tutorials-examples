@@ -13,8 +13,10 @@ public class ForEachWriteFile {
     public static void main(String[] args) {
 
         ForEachWriteFile obj = new ForEachWriteFile();
+        /*
         // Normal        
         obj.save(Paths.get("/home/tvt/workspace/favtuts/dummies"), obj.createDummyFiles());
+        */
 
         // Improve
         Path path = Paths.get("/home/tvt/workspace/favtuts/dummies");
