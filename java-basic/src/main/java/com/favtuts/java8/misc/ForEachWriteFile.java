@@ -13,7 +13,12 @@ public class ForEachWriteFile {
     public static void main(String[] args) {
 
         ForEachWriteFile obj = new ForEachWriteFile();
+        // Normal        
         obj.save(Paths.get("/home/tvt/workspace/favtuts/dummies"), obj.createDummyFiles());
+
+        // Improve
+        Path path = Paths.get("/home/tvt/workspace/favtuts/dummies");
+        obj.createDummyFiles().forEach(o -> obj.saveFile(path, o));
     }
 
     public void save(Path path, List<DummyFile> files) {
@@ -22,7 +27,8 @@ public class ForEachWriteFile {
             throw new IllegalArgumentException("Path must be a directory");
         }
 
-        files.forEach(f -> {
+        // extract to a new method
+        /*files.forEach(f -> {
             try {
                 int id = f.getId();
                 // create a filename
@@ -32,9 +38,24 @@ public class ForEachWriteFile {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        });
+        });*/
+
+        files.forEach(f -> saveFile(path, f));
 
     }
+
+    public void saveFile(Path path, DummyFile f) {
+        try {
+            int id = f.getId();
+            // create a filename
+            String fileName = id + ".txt";
+            Files.write(path.resolve(fileName),
+                    f.getContent().getBytes(StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     
     public List<DummyFile> createDummyFiles() {
         return Arrays.asList(
