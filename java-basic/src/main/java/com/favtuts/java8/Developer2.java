@@ -13,7 +13,7 @@ public class Developer2 {
     public Developer2() {
     }
 
-    // for factory(() -> new Developer("mkyong"));
+    // for factory(() -> new Developer("favtuts"));
     public Developer2(String name) {
         this.name = name;
     }

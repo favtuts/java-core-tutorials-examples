@@ -11,7 +11,7 @@ public class CountFileLines {
 
     public static void main(String[] args) {
 
-        String fileName = "/home/mkyong/large-file.txt";
+        String fileName = "/home/favtuts/large-file.txt";
 
         System.out.println(LocalDateTime.now());
 

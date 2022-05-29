@@ -23,7 +23,7 @@ public class FileFindExample {
         List<Path> result = findByFileName(path, "google.png");
         result.forEach(x -> System.out.println(x));
 
-        /*Path path = Paths.get("C:\\Users\\mkyong\\Downloads");
+        /*Path path = Paths.get("C:\\Users\\favtuts\\Downloads");
         long fileSize = 1024 * 1024 * 100; // 100M
         List<Path> result = findByFileSize(path, fileSize);
         for (Path p : result) {
