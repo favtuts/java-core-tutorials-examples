@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StreamFilterNullValues {
+
     public static void main(String[] args) {
 
         Stream<String> language = Stream.of("java", "python", "node", null, "ruby", null, "php");
@@ -20,7 +21,6 @@ public class StreamFilterNullValues {
         List<String> result = language.filter(Objects::nonNull).collect(Collectors.toList());
 
         result.forEach(System.out::println);
-
 
     }
 }
