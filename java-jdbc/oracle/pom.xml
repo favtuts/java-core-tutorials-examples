@@ -23,7 +23,7 @@
             <artifactId>ojdbc</artifactId>
             <version>8</version>
             <scope>system</scope>
-            <systemPath>d:/projects/ojdbc8.jar</systemPath>
+            <systemPath>/home/tvt/workspace/favtuts/jdbc/oracle/ojdbc8-full/ojdbc8.jar</systemPath>
         </dependency>
 
         <!--
